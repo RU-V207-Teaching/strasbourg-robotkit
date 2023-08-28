@@ -11,6 +11,7 @@ import os
 import argparse
 import logging
 import platform
+from pathlib import Path
 
 # Which OS are we in?
 #import platform
@@ -41,8 +42,9 @@ class CircuitPythonSync():
             drive_list = [d for d in drives if win32file.GetDriveType(d) == win32con.DRIVE_REMOVABLE]
             for i in drive_list:
                 volname = win32api.GetVolumeInformation(i)[0]
-                self.logger.info(f"volume:{volname} at {i}")
+                self.logger.debug(f"volume:{volname} at {i}")
                 if volname == "CIRCUITPY":
+                    self.logger.info(f"Found CircuitPython device on {i}")
                     self.dest = i
                     break
         
@@ -53,10 +55,14 @@ class CircuitPythonSync():
             self.logger.error("Mac not implemented yet")
             system.exit(0)
 
-    def clearoldpy(self):
+    def clearoldcode(self, codeglob="*.py"):
         "Clear out any old .py files"
-        pass
-
+        if not self.dest:
+            raise OSError("CircuitPython Drive not set")
+        for p in Path(self.dest).glob(codeglob):
+            self.logger.info(f"Removing {p}")
+            os.remove(p)
+            
     def installnewfiles(self):
         "Copy new files over and rename main file if needed"
         pass
@@ -102,7 +108,7 @@ def main():
     logger.info("Starting to log CpSync to log file %s", logpath)
     CPS = CircuitPythonSync(args,logger)
     CPS.finddestination()
-    CPS.clearoldpy()
+    CPS.clearoldcode()
     
     
 if __name__ == "__main__":
