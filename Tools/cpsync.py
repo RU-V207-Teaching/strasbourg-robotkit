@@ -35,7 +35,6 @@ class CircuitPythonSync():
             import win32api
             import win32con
             import win32file
-
             
             drives = [i for i in win32api.GetLogicalDriveStrings().split('\x00') if i]
             #print(drives)
@@ -43,8 +42,25 @@ class CircuitPythonSync():
             for i in drive_list:
                 volname = win32api.GetVolumeInformation(i)[0]
                 self.logger.info(f"volume:{volname} at {i}")
+                if volname == "CIRCUITPY":
+                    self.dest = i
+                    break
+        
+        elif platform.system() == "Linux":
+            self.logger.error("Linux not implemented yet")
+            system.exit(0)
+        else:
+            self.logger.error("Mac not implemented yet")
+            system.exit(0)
 
+    def clearoldpy(self):
+        "Clear out any old .py files"
+        pass
 
+    def installnewfiles(self):
+        "Copy new files over and rename main file if needed"
+        pass
+    
 def main():
     """Main program loop"""
     print("""CircuitPython Sync by Joseph. T. Foley<foley AT ru DOT is>
@@ -55,6 +71,8 @@ def main():
         help='Console log level:  Number or DEBUG, INFO, WARNING, ERROR')
     parser.add_argument('--src', default=".",
         help='Where to get CircuitPython code from')
+    parser.add_argument('--main',
+        help='file to rename to code.py')
 
     args = parser.parse_args()
     ## Set up logging
@@ -84,6 +102,8 @@ def main():
     logger.info("Starting to log CpSync to log file %s", logpath)
     CPS = CircuitPythonSync(args,logger)
     CPS.finddestination()
+    CPS.clearoldpy()
+    
     
 if __name__ == "__main__":
     main()
