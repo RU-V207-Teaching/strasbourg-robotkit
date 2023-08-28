@@ -12,6 +12,7 @@ import argparse
 import logging
 import platform
 from pathlib import Path
+import shutil
 
 # Which OS are we in?
 #import platform
@@ -44,9 +45,11 @@ class CircuitPythonSync():
                 volname = win32api.GetVolumeInformation(i)[0]
                 self.logger.debug(f"volume:{volname} at {i}")
                 if volname == "CIRCUITPY":
-                    self.logger.info(f"Found CircuitPython device on {i}")
+                    ## found one.  What do we do if there are more?
+                    self.logger.info(f"Found CircuitPython device on {i}")                    
                     self.dest = i
                     break
+                
         
         elif platform.system() == "Linux":
             self.logger.error("Linux not implemented yet")
@@ -63,9 +66,14 @@ class CircuitPythonSync():
             self.logger.info(f"Removing {p}")
             os.remove(p)
             
-    def installnewfiles(self):
+    def installnewfiles(self, codeglob="*.py"):
         "Copy new files over and rename main file if needed"
-        pass
+        # grab everything in the source directory
+        #TODO: look at a manifest?
+        for p in Path(self.args.src).glob(codeglob):
+            self.logger.info(f"Copying {p} to {self.dest}")
+            shutil.copy2(p,self.dest)
+        
     
 def main():
     """Main program loop"""
@@ -109,6 +117,7 @@ def main():
     CPS = CircuitPythonSync(args,logger)
     CPS.finddestination()
     CPS.clearoldcode()
+    CPS.installnewfiles()
     
     
 if __name__ == "__main__":
