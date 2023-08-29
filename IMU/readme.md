@@ -9,16 +9,11 @@ STMicro LSM303D-TR  3D Accelerometer + 3D Compass
 Adafruit guide (different board) https://learn.adafruit.com/lsm303-accelerometer-slash-compass-breakout/python-circuitpython
 STMicroelectronics reference:  https://www.st.com/en/mems-and-sensors/lsm303d.html
 
-Bosch BMP180 Barometric Pressure/Temperature/Altitude Sensor
-Adafruit overview (different board) https://www.adafruit.com/product/1603
-Adafruit tutorial (different board)  https://learn.adafruit.com/bmp085/downloads
-Datasheet:  https://cdn-shop.adafruit.com/datasheets/BST-BMP180-DS000-09.pdf
-
 Testing configuration:
 Materials:  Adafruit Metro M4 Airlift Lite  (Firmware ??, MicroPython ??, Bootload ??)
 
 Wire these pins together  (notice that some do not get wired)
-
+```
 Metro	9DOF board
 3v3 --> Vin
 --- --> 3V0
@@ -30,6 +25,7 @@ SDA --> SDA
 --- --> LIN1
 --- --> LIN2
 --- --> LRDY
+```
 
 Copy all the files that start "adafruit" and end in .mpy into lib on CIRCUITPY drive.  These are stock versions from the bundle 8.x at https://circuitpython.org/libraries
 
