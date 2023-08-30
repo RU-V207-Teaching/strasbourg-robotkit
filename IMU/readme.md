@@ -1,9 +1,11 @@
-Testing procedure for the knockoff Adafruit 9-DOF board
-https://www.adafruit.com/product/1714
+Testing procedure for the non-branded Adafruit 9-DOF board
+https://www.adafruit.com/product/1032
 
 STMicro L3G4200D 3-axis gyroscope
 Pololu overview page:  https://www.pololu.com/product/1272
 Datasheet:  https://www.pololu.com/file/0J491/L3G4200D.pdf
+Arduino Lib: https://github.com/adafruit/Adafruit_L3GD20_U
+Python support:  https://www.pololu.com/file/0J491/L3G4200D.pdf
 
 STMicro LSM303D-TR  3D Accelerometer + 3D Compass
 Adafruit guide (different board) https://learn.adafruit.com/lsm303-accelerometer-slash-compass-breakout/python-circuitpython
@@ -28,6 +30,10 @@ SDA --> SDA
 ```
 
 Copy all the files that start "adafruit" and end in .mpy into lib on CIRCUITPY drive.  These are stock versions from the bundle 8.x at https://circuitpython.org/libraries
+
+Copy l3g4200d.py and l3g4200d-gyro_test.py on to the CIRCUITPY drive.  Rename l3g4200d-gyro_test.py to code.py
+Open Mu (or other) serial console at 115200 baud
+Rotating it should see some change in the numbers.
 
 Copy lsm303-accel_test.py and rename to code.py
 Open Mu (or other) serial console at 115200 baud
